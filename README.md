@@ -3,88 +3,82 @@ A lightweight Python toolkit to **extract** and **remove** image metadata (EXIF,
 Also generates an **interactive map (.html)** from GPS coordinates if found in the image.
 
 ---
+## 🔒 Why This Project?
 
+Digital photos often contain hidden metadata (EXIF, GPS, IPTC).
+This can reveal sensitive details such as your location or device information when sharing online.
+This tool helps protect your privacy by cleaning or extracting that data safely
+
+---
 ## 🚀 Features  
 - 🔍 Extracts **all EXIF metadata** from images (JPEG, PNG, etc.)
 - 🌍 Detects **GPS coordinates** and saves an interactive **map (HTML)** with the image’s location
 - 🧹 Removes **all metadata** (privacy protector) and saves a clean copy
 - 📷 Displays **image details** like file size, type, resolution, and color space
----
-
-## 📦 Installation  
-
-### Requirements  
-This project needs Python 3 and the following libraries:  
-
-- pillow
-- exifread
-- piexif
-- folium
+- 🎨 Colorful terminal output for better readability  
+- ⚡ Run directly with `imer` command (after setup)  
 
 
-Install them with:  
+
+
+## 🛠️ Installation  
+
+### Option 1: For **Linux Users** 🐧
+
+
+1.You don’t need to run pip manually. Just run the install.sh script and everything will be set up automatically.
 ```bash
-pip install -r requirements.txt
- ```
-
-## ⚡ Run the Tool
-
-Option 1: Direct Python
-```bash
-python3 imer.py
+git clone https://github.com/yourusername/imer.git
+cd imer
+chmod +x install.sh
+./install.sh
 ```
-Option 2: As a Linux Command
-
-1. Rename the file to imer (remove .py)
-2.Add shebang at the top:
-```bash
-#!/usr/bin/env python3
-```
-3. Make it executable:
-```bash
-chmod +x imer
-```
-Move to system path:
-```bash
-sudo mv imer /usr/local/bin/
-```
-✅ Now run from anywhere:
+✅ After installation, you can run the tool directly with:
 ```bash
 imer
 ```
-## 🛠️ Usage
-When you run imer, choose one of the options:
+### Option 2: For **For Other Systems (Windows / macOS) 💻**
+1.Clone the repository:
 ```bash
-=== Digital Forensics Image Metadata Toolkit ===
+git clone https://github.com/yourusername/imer.git
+cd imer
+```
+2.Install dependencies using ```bashrequirements.txt```:
+```bash
+pip install -r requirements.txt
+```
+3.Run the tool manually:
+```bash
+python3 imer.py
+```
+
+## 🛠️ Usage
+
+You’ll see:
+
+```bash
+===  Image Metadata Extractor & Remover  ===
 
 Enter image file path: example.jpg
 
 Choose an option:
 1. Extract privacy-sensitive metadata
 2. Remove all metadata
+Enter choice (1 or 2):
 
 ```
 Option 1 → Extracts metadata + saves GPS map if found (image_location.html)
 
 Option 2 → Removes all metadata and saves as clean_example.jpg
 
-## 📂 Project Structure
-
-```bash
-
-image-metadata-tool/
-│── main.py              # Main program file
-│── requirements.txt     # Dependencies list
-│── README.md            # Documentation (this file)
-│── .gitignore           # Ignore unnecessary files
-```
 
 
-## 🔒 Why This Project?
 
-Digital photos often contain hidden metadata (EXIF, GPS, IPTC).
-This can reveal sensitive details such as your location or device information when sharing online.
-This tool helps protect your privacy by cleaning or extracting that data safely
+
+
+## 📜 License
+
+[MIT](https://github.com/Kirtan7/Image-Metadata-Extractor-Remover?tab=MIT-1-ov-file#)
 
 ## 🤝 Contributing
 
@@ -92,8 +86,5 @@ Pull requests and suggestions are welcome!
 If you find a bug, open an issue on GitHub.
 
 
-## License
-
-[MIT](https://github.com/Kirtan7/Image-Metadata-Extractor-Remover?tab=MIT-1-ov-file#)
 
 
