@@ -84,9 +84,16 @@ image-metadata-tool/
 
 Digital photos often contain hidden metadata (EXIF, GPS, IPTC).
 This can reveal sensitive details such as your location or device information when sharing online.
-This tool helps protect your privacy by cleaning or extracting that data safely.
+This tool helps protect your privacy by cleaning or extracting that data safely
 
 ## 🤝 Contributing
 
 Pull requests and suggestions are welcome!
 If you find a bug, open an issue on GitHub.
+
+
+## License
+
+[MIT](https://github.com/Kirtan7/Image-Metadata-Extractor-Remover?tab=MIT-1-ov-file#)
+
+
