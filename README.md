@@ -43,7 +43,8 @@ imer
 git clone https://github.com/yourusername/imer.git
 cd imer
 ```
-2.Install dependencies using ```bashrequirements.txt```:
+2.Install dependencies using requirements.txt:
+
 ```bash
 pip install -r requirements.txt
 ```
