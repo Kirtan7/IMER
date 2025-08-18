@@ -1,21 +1,13 @@
 #!/bin/bash
 
-# Installer for IMER
+echo "🔍 Detecting system type..."
+if [ -f /etc/debian_version ]; then
+    echo "✅ Debian/Kali/Ubuntu detected. Installing via apt..."
+    sudo apt update
+    sudo apt install -y python3-piexif python3-exifread python3-folium python3-colorama
+else
+    echo "⚠️ Non-Debian system detected. Installing via pip..."
+    pip install -r requirements.txt --break-system-packages || pip install -r requirements.txt
+fi
 
-echo "📦 Installing IMER (Image Metadata Extractor & Remover)..."
-
-# Install dependencies
-sudo apt update
-sudo apt install -y python3 python3-pip python3-venv
-
-# Install Python libraries
-pip3 install --upgrade pip
-pip3 install pillow exifread piexif folium colorama
-
-# Copy script to /usr/local/bin
-sudo cp imer.py /usr/local/bin/imer
-sudo chmod +x /usr/local/bin/imer
-
-echo "✅ Installation complete!"
-echo "Now you can run the tool by typing: imer"
-
+echo "🎉 Installation complete! You can now run the tool using: ./imer"
