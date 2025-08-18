@@ -1,11 +1,20 @@
 #!/usr/bin/env python3
 
-
 from PIL import Image
 from colorama import Fore, Style, init
 import exifread
 import folium
 import os
+import readline
+import glob
+
+# Enable TAB autocompletion for file paths
+def complete(text, state):
+    return (glob.glob(text + '*') + [None])[state]
+
+readline.set_completer_delims(' \t\n;')
+readline.parse_and_bind("tab: complete")
+readline.set_completer(complete)
 
 
 # Helper: Convert GPS to Degrees
@@ -129,12 +138,10 @@ def remove_metadata(file_path):
     print(f"[+] Metadata removed. Clean image saved as: {clean_path}")
 
 
-# Main Program
-
-
 # Initialize colorama
 init(autoreset=True)
 
+# Main Program
 if __name__ == "__main__":
     # Big Green Title
     print("\n" + Fore.GREEN + Style.BRIGHT + "="*60)
@@ -154,3 +161,4 @@ if __name__ == "__main__":
         remove_metadata(file_path)
     else:
         print(Fore.RED + "[!] Invalid choice")
+
