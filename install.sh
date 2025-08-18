@@ -1,13 +1,20 @@
 #!/bin/bash
 
-echo "🔍 Detecting system type..."
-if [ -f /etc/debian_version ]; then
-    echo "✅ Debian/Kali/Ubuntu detected. Installing via apt..."
-    sudo apt update
-    sudo apt install -y python3-piexif python3-exifread python3-folium python3-colorama
-else
-    echo "⚠️ Non-Debian system detected. Installing via pip..."
-    pip install -r requirements.txt --break-system-packages || pip install -r requirements.txt
-fi
+# Exit on error
+set -e
 
-echo "🎉 Installation complete! You can now run the tool using: ./imer"
+# Define install path
+INSTALL_PATH="/usr/local/bin"
+SCRIPT_NAME="imer"
+SOURCE_FILE="$(pwd)/imer.py"
+
+# Make sure script is executable
+chmod +x "$SOURCE_FILE"
+
+# Remove old command if exists
+sudo rm -f "$INSTALL_PATH/$SCRIPT_NAME"
+
+# Create new symlink
+sudo ln -s "$SOURCE_FILE" "$INSTALL_PATH/$SCRIPT_NAME"
+
+echo "[+] Installed '$SCRIPT_NAME' globally. Run with: $SCRIPT_NAME"
