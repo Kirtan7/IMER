@@ -1,34 +1,35 @@
 #!/bin/bash
 
-# Exit immediately if a command fails
-set -e
+echo "🔍 Detecting system type..."
 
-SCRIPT_NAME="imer"
-INSTALL_PATH="/usr/local/bin"
-SOURCE_FILE="$(pwd)/imer.py"
+# === Step 1: Install dependencies ===
+if [ -f /etc/debian_version ]; then
+    echo "✅ Debian/Kali/Ubuntu detected. Installing via apt where possible..."
+    sudo apt update
+    sudo apt install -y python3-pil python3-piexif python3-exifread python3-folium python3-colorama python3-pip
 
-echo "[+] Starting installation..."
-
-# -------- Install dependencies --------
-echo "[+] Installing Python dependencies..."
-if command -v pipx >/dev/null 2>&1; then
-    echo "[*] pipx found -> using pipx for isolated installation"
-    pipx install --force -r requirements.txt
+    # Pillow is not always available via apt, ensure via pip
+    pip3 install --break-system-packages Pillow || pip3 install Pillow
 else
-    echo "[*] pipx not found -> using python venv"
-    python3 -m venv .venv
-    source .venv/bin/activate
-    pip install --upgrade pip
-    pip install -r requirements.txt
+    echo "⚠️ Non-Debian system detected. Installing via pip..."
+    pip3 install -r requirements.txt --break-system-packages || pip3 install -r requirements.txt
 fi
 
-# -------- Make main script executable --------
-chmod +x "$SOURCE_FILE"
+# === Step 2: Create global 'imer' command ===
+echo "⚙️ Setting up global command 'imer'..."
 
-# -------- Install global command --------
-echo "[+] Creating global command..."
-sudo rm -f "$INSTALL_PATH/$SCRIPT_NAME"
-sudo ln -s "$SOURCE_FILE" "$INSTALL_PATH/$SCRIPT_NAME"
+# Remove old command if exists
+if [ -f /usr/local/bin/imer ]; then
+    echo "🗑️ Removing old 'imer' command..."
+    sudo rm -f /usr/local/bin/imer
+fi
 
-echo "[✔] Installation complete!"
-echo "You can now run the tool globally using: $SCRIPT_NAME"
+# Create new launcher
+sudo bash -c "cat > /usr/local/bin/imer" <<EOF
+#!/bin/bash
+python3 "$(pwd)/imer.py" "\$@"
+EOF
+
+sudo chmod +x /usr/local/bin/imer
+
+echo "🎉 Installation complete! You can now run the tool using: imer"
