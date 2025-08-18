@@ -79,7 +79,7 @@ Option 2 → Removes all metadata and saves as clean_example.jpg
 
 ## 📜 License
 
-[MIT](https://github.com/Kirtan7/Image-Metadata-Extractor-Remover?tab=MIT-1-ov-file#)
+[MIT](https://github.com/Kirtan7/IMER/blob/main/LICENSE)
 
 ## 🤝 Contributing
 
