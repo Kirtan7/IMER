@@ -28,7 +28,7 @@ This tool helps protect your privacy by cleaning or extracting that data safely
 
 1.You don’t need to run pip manually. Just run the install.sh script and everything will be set up automatically.
 ```bash
-git clone https://github.com/Kirtan7/imer.git
+git clone https://github.com/Kirtan7/IMER.git
 cd imer
 chmod +x install.sh
 ./install.sh
@@ -40,7 +40,7 @@ imer
 ### Option 2: For **For Other Systems (Windows / macOS) 💻**
 1.Clone the repository:
 ```bash
-git clone https://github.com/yourusername/imer.git
+git clone https://github.com/Kirtan7/IMER.git
 cd imer
 ```
 2.Install dependencies using requirements.txt:
