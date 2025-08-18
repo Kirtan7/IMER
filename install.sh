@@ -1,20 +1,34 @@
 #!/bin/bash
 
-# Exit on error
+# Exit immediately if a command fails
 set -e
 
-# Define install path
-INSTALL_PATH="/usr/local/bin"
 SCRIPT_NAME="imer"
+INSTALL_PATH="/usr/local/bin"
 SOURCE_FILE="$(pwd)/imer.py"
 
-# Make sure script is executable
+echo "[+] Starting installation..."
+
+# -------- Install dependencies --------
+echo "[+] Installing Python dependencies..."
+if command -v pipx >/dev/null 2>&1; then
+    echo "[*] pipx found -> using pipx for isolated installation"
+    pipx install --force -r requirements.txt
+else
+    echo "[*] pipx not found -> using python venv"
+    python3 -m venv .venv
+    source .venv/bin/activate
+    pip install --upgrade pip
+    pip install -r requirements.txt
+fi
+
+# -------- Make main script executable --------
 chmod +x "$SOURCE_FILE"
 
-# Remove old command if exists
+# -------- Install global command --------
+echo "[+] Creating global command..."
 sudo rm -f "$INSTALL_PATH/$SCRIPT_NAME"
-
-# Create new symlink
 sudo ln -s "$SOURCE_FILE" "$INSTALL_PATH/$SCRIPT_NAME"
 
-echo "[+] Installed '$SCRIPT_NAME' globally. Run with: $SCRIPT_NAME"
+echo "[✔] Installation complete!"
+echo "You can now run the tool globally using: $SCRIPT_NAME"
