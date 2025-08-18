@@ -5,27 +5,31 @@ from colorama import Fore, Style, init
 import exifread
 import folium
 import os
+import sys
 import readline
 import glob
 
-# Enable TAB autocompletion for file paths
-def complete(text, state):
-    return (glob.glob(text + '*') + [None])[state]
+# -------- TAB Autocomplete Setup -------- #
+def complete_path(text, state):
+    """Autocomplete file paths when pressing TAB"""
+    line = readline.get_line_buffer().split()
+    if not line:
+        return [c + os.sep if os.path.isdir(c) else c for c in glob.glob(text + '*')][state]
+    else:
+        return [c + os.sep if os.path.isdir(c) else c for c in glob.glob(text + '*')][state]
 
 readline.set_completer_delims(' \t\n;')
 readline.parse_and_bind("tab: complete")
-readline.set_completer(complete)
+readline.set_completer(complete_path)
 
-
-# Helper: Convert GPS to Degrees
+# -------- Helper: Convert GPS to Degrees -------- #
 def convert_to_degrees(value):
     d, m, s = value.values
     return float(d.num / d.den) + float(m.num / m.den) / 60 + float(s.num / s.den) / 3600
 
-
-# Extract Metadata Function
+# -------- Extract Metadata Function -------- #
 def extract_metadata(file_path):
-    report_lines = []  # Collect output for saving into a file
+    report_lines = []
 
     # --- File Information ---
     file_name = os.path.basename(file_path)
@@ -41,8 +45,8 @@ def extract_metadata(file_path):
     report_lines.append("\n=== File Information ===")
     report_lines.append(f"Name:\t{file_name}")
     report_lines.append(f"File size:\t{file_size_kb} KB ({file_size} bytes)")
-    report_lines.append("File type:\tJPEG")
-    report_lines.append("MIME type:\timage/jpeg")
+    report_lines.append("File type:\tJPEG/PNG")
+    report_lines.append("MIME type:\timage/jpeg or image/png")
     report_lines.append(f"Image size:\t{width} x {height} ({megapixels} megapixels)")
     report_lines.append(f"Color space:\t{color_space}")
 
@@ -52,7 +56,6 @@ def extract_metadata(file_path):
 
     report_lines.append("\n=== Privacy-Sensitive Metadata ===")
 
-    # Only show important camera/device properties
     device_tags = {
         "Image Make": "Camera Make",
         "Image Model": "Camera Model",
@@ -89,7 +92,6 @@ def extract_metadata(file_path):
         if tag in tags:
             gps_data[tag] = tags[tag]
 
-    # Show GPS info
     if gps_data:
         report_lines.append("\n[!] GPS Data Found:")
         for tag, value in gps_data.items():
@@ -116,7 +118,6 @@ def extract_metadata(file_path):
     else:
         report_lines.append("\n[!] No GPS data found.")
 
-    # Print report
     print("\n".join(report_lines))
 
     # Save report to file
@@ -125,8 +126,7 @@ def extract_metadata(file_path):
         f.write("\n".join(report_lines))
     print(f"\n[+] Metadata report saved as: {report_file}")
 
-
-# Remove Metadata Function
+# -------- Remove Metadata Function -------- #
 def remove_metadata(file_path):
     image = Image.open(file_path)
     data = list(image.getdata())
@@ -137,23 +137,28 @@ def remove_metadata(file_path):
     image_without_exif.save(clean_path)
     print(f"[+] Metadata removed. Clean image saved as: {clean_path}")
 
-
-# Initialize colorama
+# -------- Main Program -------- #
 init(autoreset=True)
 
-# Main Program
 if __name__ == "__main__":
-    # Big Green Title
     print("\n" + Fore.GREEN + Style.BRIGHT + "="*60)
     print(Fore.GREEN + Style.BRIGHT + "      Image Metadata Extractor & Remover     ")
     print(Fore.GREEN + Style.BRIGHT + "="*60 + "\n")
 
-    file_path = input("\nEnter image file path: ")
+    # File path input (BOLD)
+    file_path = input(Fore.YELLOW + Style.BRIGHT + "\nEnter image file path: " + Style.RESET_ALL)
 
-    print("\nChoose an option:")
-    print("1. Extract privacy-sensitive metadata")
-    print("2. Remove all metadata")
-    choice = input("Enter choice (1 or 2): ")
+    # File extension validation
+    valid_exts = [".jpg", ".jpeg", ".png"]
+    if not any(file_path.lower().endswith(ext) for ext in valid_exts):
+        print(Fore.RED + Style.BRIGHT + f"\n[!] Unsupported file type. Only {valid_exts} are allowed.")
+        sys.exit(1)
+
+    # Options (BOLD)
+    print("\n" + Fore.CYAN + Style.BRIGHT + "Choose an option:")
+    print(Fore.CYAN + Style.BRIGHT + "1. Extract privacy-sensitive metadata")
+    print(Fore.CYAN + Style.BRIGHT + "2. Remove all metadata")
+    choice = input(Fore.YELLOW + Style.BRIGHT + "Enter choice (1 or 2): " + Style.RESET_ALL)
 
     if choice == "1":
         extract_metadata(file_path)
@@ -161,4 +166,3 @@ if __name__ == "__main__":
         remove_metadata(file_path)
     else:
         print(Fore.RED + "[!] Invalid choice")
-
