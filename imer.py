@@ -9,7 +9,7 @@ import sys
 import readline
 import glob
 
-# -------- TAB Autocomplete Setup -------- #
+# TAB Autocomplete Setup
 def complete_path(text, state):
     """Autocomplete file paths when pressing TAB"""
     line = readline.get_line_buffer().split()
@@ -22,12 +22,12 @@ readline.set_completer_delims(' \t\n;')
 readline.parse_and_bind("tab: complete")
 readline.set_completer(complete_path)
 
-# -------- Helper: Convert GPS to Degrees -------- #
+#  Convert GPS to Degrees 
 def convert_to_degrees(value):
     d, m, s = value.values
     return float(d.num / d.den) + float(m.num / m.den) / 60 + float(s.num / s.den) / 3600
 
-# -------- Extract Metadata Function -------- #
+# Extract Metadata Function 
 def extract_metadata(file_path):
     report_lines = []
 
@@ -50,7 +50,7 @@ def extract_metadata(file_path):
     report_lines.append(f"Image size:\t{width} x {height} ({megapixels} megapixels)")
     report_lines.append(f"Color space:\t{color_space}")
 
-    # --- Metadata Extraction ---
+    # Metadata Extraction
     with open(file_path, 'rb') as f:
         tags = exifread.process_file(f)
 
@@ -126,7 +126,7 @@ def extract_metadata(file_path):
         f.write("\n".join(report_lines))
     print(f"\n[+] Metadata report saved as: {report_file}")
 
-# -------- Remove Metadata Function -------- #
+#Remove Metadata Function
 def remove_metadata(file_path):
     image = Image.open(file_path)
     data = list(image.getdata())
@@ -137,7 +137,7 @@ def remove_metadata(file_path):
     image_without_exif.save(clean_path)
     print(f"[+] Metadata removed. Clean image saved as: {clean_path}")
 
-# -------- Main Program -------- #
+# Main Program
 init(autoreset=True)
 
 if __name__ == "__main__":
